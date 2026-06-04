@@ -4,7 +4,11 @@
 
 This project implements a Handwritten Digit Recognition System using a Convolutional Neural Network (CNN) trained on the MNIST dataset. The model recognizes handwritten digits from 0–9 with high accuracy.
 
----
+## Model Performance
+
+- Dataset: MNIST Handwritten Digits
+- Model: Convolutional Neural Network (CNN)
+- Test Accuracy: 98.89%
 
 ## Project Structure
 
@@ -34,29 +38,14 @@ Task1/
 └── README.md
 ```
 
----
-
-## Technologies Used
-
-- Python
-- TensorFlow / Keras
-- NumPy
-- Matplotlib
-- Seaborn
-- Scikit-learn
-
----
-
 ## Workflow
 
-1. Load MNIST dataset
-2. Preprocess and normalize images
-3. Train CNN model
+1. Load and preprocess the MNIST dataset
+2. Perform Exploratory Data Analysis (EDA)
+3. Build and train a CNN model
 4. Evaluate model performance
-5. Save trained model
-6. Predict handwritten digits from custom images
-
----
+5. Save the trained model
+6. Predict handwritten digits from input images
 
 ## Results
 
@@ -69,17 +58,13 @@ Generated outputs include:
 - Wrong Prediction Analysis
 - Sample Digit Recognition
 
----
+## Requirements
 
-## Model
+Install dependencies using:
 
-Trained model file:
-
+```bash
+pip install -r requirements.txt
 ```
-digit_model.h5
-```
-
----
 
 ## Author
 
