@@ -124,7 +124,6 @@ margin-bottom:15px;
 # ---------------------------
 # Preprocessing Function
 # ---------------------------
-
 def preprocess_digit(img):
     """
     MNIST-style preprocessing for uploaded images,
@@ -132,14 +131,15 @@ def preprocess_digit(img):
     """
 
     try:
+
         # Convert to grayscale
         if len(img.shape) == 3:
             img = cv2.cvtColor(img, cv2.COLOR_RGB2GRAY)
 
-        # Blur to reduce noise
+        # Reduce noise
         img = cv2.GaussianBlur(img, (5, 5), 0)
 
-        # Adaptive threshold (works better for camera images)
+        # Adaptive threshold
         thresh = cv2.adaptiveThreshold(
             img,
             255,
@@ -149,9 +149,9 @@ def preprocess_digit(img):
             2
         )
 
-        # Small dilation
+        # Thin overly thick strokes
         kernel = np.ones((2, 2), np.uint8)
-        thresh = cv2.dilate(
+        thresh = cv2.erode(
             thresh,
             kernel,
             iterations=1
@@ -174,13 +174,13 @@ def preprocess_digit(img):
 
         digit = thresh[y:y+h, x:x+w]
 
-        # Resize while preserving aspect ratio
+        # Preserve aspect ratio
         if w > h:
             new_w = 20
-            new_h = int(h * 20 / w)
+            new_h = max(1, int(h * 20 / w))
         else:
             new_h = 20
-            new_w = int(w * 20 / h)
+            new_w = max(1, int(w * 20 / h))
 
         digit = cv2.resize(
             digit,
@@ -188,7 +188,7 @@ def preprocess_digit(img):
             interpolation=cv2.INTER_AREA
         )
 
-        # Create MNIST-style canvas
+        # Create 28x28 MNIST canvas
         canvas = np.zeros((28, 28), dtype=np.uint8)
 
         x_offset = (28 - new_w) // 2
@@ -199,9 +199,18 @@ def preprocess_digit(img):
             x_offset:x_offset + new_w
         ] = digit
 
+        # Slight dilation after resize
+        kernel = np.ones((2, 2), np.uint8)
+        canvas = cv2.dilate(
+            canvas,
+            kernel,
+            iterations=1
+        )
+
         preview = canvas.copy()
 
         processed = canvas.astype("float32") / 255.0
+
         processed = processed.reshape(
             1,
             28,
