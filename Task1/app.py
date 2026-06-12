@@ -150,12 +150,12 @@ def preprocess_digit(img):
         )
 
         # Thin overly thick strokes
-        kernel = np.ones((2, 2), np.uint8)
-        thresh = cv2.erode(
-            thresh,
-            kernel,
-            iterations=1
-        )
+        #kernel = np.ones((2, 2), np.uint8)
+        #thresh = cv2.erode(
+            #thresh,
+            #kernel,
+            #iterations=1
+        #)
 
         # Find contours
         contours, _ = cv2.findContours(
@@ -348,7 +348,7 @@ else:
     # FIX: Replaced the literal '...' with your actual original parameters
     canvas_result = st_canvas(
         fill_color="black",
-        stroke_width=15,
+        stroke_width=5,
         stroke_color="white",
         background_color="black",
         height=280,
