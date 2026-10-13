@@ -14,7 +14,11 @@ from pathlib import Path
 BASE_DIR = Path(__file__).resolve().parent
 MODEL_PATH = BASE_DIR / "Model" / "digit_model.h5"
 
-model = load_model(MODEL_PATH)
+if not MODEL_PATH.is_file():
+    st.error(f"Model file not found: {MODEL_PATH}")
+    st.stop()
+
+model = load_model(str(MODEL_PATH))
 def display_prediction_results(prediction):
     """
     Helper function to process and display the predicted digit, 
