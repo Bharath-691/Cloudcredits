@@ -133,15 +133,36 @@ section[data-testid="stSidebar"] {
 </style>
 """, unsafe_allow_html=True)
 
+
 # =========================
 # LOAD MODEL
 # =========================
+from pathlib import Path
+import pickle
+
+BASE_DIR = Path(__file__).resolve().parent
+MODEL_DIR = BASE_DIR / "model"
+
+model_path = MODEL_DIR / "sentiment_model.pkl"
+vectorizer_path = MODEL_DIR / "vectorizer.pkl"
+
 try:
-    model = pickle.load(open("model/sentiment_model.pkl", "rb"))
-    vectorizer = pickle.load(open("model/vectorizer.pkl", "rb"))
-except:
-    st.error("❌ Model files not found. Ensure paths for your pkl files are correct.")
+    with open(model_path, "rb") as f:
+        model = pickle.load(f)
+
+    with open(vectorizer_path, "rb") as f:
+        vectorizer = pickle.load(f)
+
+except FileNotFoundError:
+    st.error("Model files not found. Please check the model folder and filenames.")
+    st.write("Expected model path:", str(model_path))
+    st.write("Expected vectorizer path:", str(vectorizer_path))
     st.stop()
+
+except Exception as e:
+    st.error(f"Unable to load model files: {e}")
+    st.stop()
+
 
 # =========================
 # SIDEBAR
